@@ -1,0 +1,391 @@
+import pandas as pd 
+import pyodbc
+from ConnectionToSql import conn,cursor
+from TableSchema import TableName
+
+#%%
+
+df = pd.read_csv(r"C:\Users\CarloNicolai\OneDrive - Lobra S.r.l\Desktop\data\Serie_a.csv")
+#%%
+columns=['Div',
+'Date',
+#'Time',
+'HomeTeam',
+'AwayTeam',
+'FTHG',
+'FTAG',
+'FTR',
+'HTHG',
+'HTAG',
+'HTR',
+'HS',
+'AS',
+'HST',
+'AST',
+'HF',
+'AF',
+'HC',
+'AC',
+'HY',
+'AY',
+'HR',
+'AR',
+'B365H',
+'B365D',
+'B365A',
+'BWH',
+'BWD',
+'BWA',
+'GBH',
+'GBD',
+'GBA',
+'PSH',
+'PSD',
+'PSA',
+'IWH',
+'IWD',
+'IWA',
+'VCH',
+'VCD',
+'VCA',
+'MaxH',
+'MaxD',
+'MaxA',
+'AvgH',
+'AvgD',
+'AvgA',
+'B365>2.5',
+'B365<2.5',
+'P>2.5',
+'P<2.5',
+'Max>2.5',
+'Max<2.5',
+'Avg>2.5',
+'Avg<2.5',
+'AHh',
+'B365AHH',
+'B365AHA',
+'PAHH',
+'PAHA',
+'MaxAHH',
+'MaxAHA',
+'AvgAHH',
+'AvgAHA',
+'B365CH',
+'B365CD',
+'B365CA',
+'BWCH',
+'BWCD',
+'BWCA',
+'IWCH',
+'IWCD',
+'IWCA',
+'PSCH',
+'PSCD',
+'PSCA',
+'WHCH',
+'WHCD',
+'WHCA',
+'VCCH',
+'VCCD',
+'VCCA',
+'MaxCH',
+'MaxCD',
+'MaxCA',
+'AvgCH',
+'AvgCD',
+'AvgCA',
+'B365C>2.5',
+'B365C<2.5',
+'PC>2.5',
+'PC<2.5',
+'MaxC>2.5',
+'MaxC<2.5',
+'AvgC>2.5',
+'AvgC<2.5',
+'AHCh',
+'B365CAHH',
+'B365CAHA',
+'PCAHH',
+'PCAHA',
+'MaxCAHH',
+'MaxCAHA',
+'AvgCAHH',
+'AvgCAHA',
+'LBH',
+'LBD',
+'LBA',
+'SOH',
+'SBH',
+'Referee',
+'WHH',
+'WHD',
+'WHA',
+'SJH',
+'SJD',
+'SJA',
+'Bb1X2',
+'BbMxH',
+'BbAvH']
+
+#%%
+df_data=df[columns]
+df_data.dropna(subset = ['HomeTeam', 'AwayTeam'], inplace = True)
+df_data=df_data.fillna(0)
+#%%
+records =df_data.values.tolist()
+print(records)
+#%%
+sqlinsert= '''INSERT INTO {} (
+         Div
+        ,Date
+        ,HomeTeam
+        ,AwayTeam
+        ,FTHG
+        ,FTAG
+        ,FTR
+        ,HTHG
+        ,HTAG
+        ,HTR
+        ,HS
+        ,AI
+        ,HST
+        ,AST
+        ,HF
+        ,AF
+        ,HC
+        ,AC
+        ,HY
+        ,AY
+        ,HR
+        ,AR
+        ,B365H
+        ,B365D
+        ,B365A
+        ,BWH
+        ,BWD
+        ,BWA
+        ,GBH
+        ,GBD
+        ,GBA
+        ,PSH
+        ,PSD
+        ,PSA
+        ,IWH
+        ,IWD
+        ,IWA
+        ,VCH
+        ,VCD
+        ,VCA
+        ,MaxH
+        ,MaxD
+        ,MaxA
+        ,AvgH
+        ,AvgD
+        ,AvgA
+        ,B365GreaterThan2_5
+        ,B36MinusThan2_5
+        ,PGreaterThan2_5
+        ,PMinusThan2_5
+        ,MaxGreaterThan2_5
+        ,MaxMinusThan2_5
+        ,AvgGreaterThan2_5
+        ,AvgMinusThan2_5
+        ,AHh
+        ,B365AHH
+        ,B365AHA
+        ,PAHH
+        ,PAHA
+        ,MaxAHH
+        ,MaxAHA
+        ,AvgAHH
+        ,AvgAHA
+        ,B365CH
+        ,B365CD
+        ,B365CA
+        ,BWCH
+        ,BWCD
+        ,BWCA
+        ,IWCH
+        ,IWCD
+        ,IWCA
+        ,PSCH
+        ,PSCD
+        ,PSCA
+        ,WHCH
+        ,WHCD
+        ,WHCA
+        ,VCCH
+        ,VCCD
+        ,VCCA
+        ,MaxCH
+        ,MaxCD
+        ,MaxCA
+        ,AvgCH
+        ,AvgCD
+        ,AvgCA
+        ,B365CGreaterThan2_5
+        ,B365CMinusThan2_5
+        ,PCGreaterThan2_5
+        ,PCinusThan2_5
+        ,MaxCGreaterThan2_5
+        ,MaxCMinusThan2_5
+        ,AvgCGreaterThan2_5
+        ,AvgCinusThan2_5
+        ,AHCh
+        ,B365CAHH
+        ,B365CAHA
+        ,PCAHH
+        ,PCAHA
+        ,MaxCAHH
+        ,MaxCAHA
+        ,AvgCAHH
+        ,AvgCAHA
+        ,LBH
+        ,LBD
+        ,LBA
+        ,SOH
+        ,SBH
+        ,Referee
+        ,WHH
+        ,WHD
+        ,WHA
+        ,SJH
+        ,SJD
+        ,SJA
+        ,Bb1X2
+        ,BbMxH
+        ,BbAvH)
+        VALUES(
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?
+)'''.format(TableName)
+
+
+cursor.executemany(sqlinsert,records)
+cursor.commit()
+cursor.close()
+conn.close()
+
+# except Exception as error:
+#     cursor.rollback()
+# finally:
+#     cursor.close()
+#     conn.close()
