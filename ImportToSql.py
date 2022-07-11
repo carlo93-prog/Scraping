@@ -378,7 +378,6 @@ sqlinsert= '''INSERT INTO {} (
         ?
 )'''.format(TableName)
 
-<<<<<<< HEAD
 try:
         cursor.executemany(sqlinsert,records)
         cursor.commit()
@@ -387,16 +386,3 @@ except Exception as error:
 finally:
         cursor.close()
         conn.close()
-=======
-
-cursor.executemany(sqlinsert,records)
-cursor.commit()
-cursor.close()
-conn.close()
-
-# except Exception as error:
-#     cursor.rollback()
-# finally:
-#     cursor.close()
-#     conn.close()
->>>>>>> bed1168c6264a7a13fb577766fca94aa9437eaba
