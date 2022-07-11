@@ -107,6 +107,7 @@ Schema='''CREATE TABLE {}
             MaxCAHA float,
             AvgCAHH float,
             AvgCAHA float,
+            Stagione nvarchar(50),
             LBH float,
             LBD float,
             LBA float,

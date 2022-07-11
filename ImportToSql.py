@@ -112,6 +112,7 @@ columns=['Div',
 'MaxCAHA',
 'AvgCAHH',
 'AvgCAHA',
+'Stagione',
 'LBH',
 'LBD',
 'LBA',
@@ -241,6 +242,7 @@ sqlinsert= '''INSERT INTO {} (
         ,MaxCAHA
         ,AvgCAHH
         ,AvgCAHA
+        ,Stagione
         ,LBH
         ,LBD
         ,LBA
@@ -257,6 +259,7 @@ sqlinsert= '''INSERT INTO {} (
         ,BbMxH
         ,BbAvH)
         VALUES(
+        ?,
         ?,
         ?,
         ?,
