@@ -50,8 +50,12 @@ print(current_season)
 
 #%%
 def function (path1,path2):
+    stagione_1=path1[40:44]
+    stagione_2=path2[40:44]
     df1= pd.read_csv(path1,error_bad_lines=False)
+    df1['Stagione']=stagione_1
     df2= pd.read_csv(path2,error_bad_lines=False)
+    df2['Stagione']='SS' +''+ str(stagione_2)
     lista1=list(df1.columns)
     lista2=list(df2.columns)
     check=[]
@@ -66,7 +70,7 @@ def function (path1,path2):
             df2.insert(loc = position,
               column = df1.columns[position],
               value=None)
-    df2.drop(columns=df2.iloc[:,105:len(df2.columns)].columns.tolist(), inplace=True)
+    df2.drop(columns=df2.iloc[:,105:len(df2.columns)-1].columns.tolist(), inplace=True)
     file_name=path2[40:44]
     return df2.to_csv(r'C:\Users\CarloNicolai\OneDrive - Lobra S.r.l\Desktop\data\Serie_A{}.csv'.format(file_name))
 

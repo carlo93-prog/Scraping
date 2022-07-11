@@ -1,0 +1,148 @@
+from ConnectionToSql import conn,cursor
+
+TableName='SerieA'
+Schema='''CREATE TABLE {}
+            (Div nvarchar(4),
+            Date date,
+            Time time,
+            HomeTeam nvarchar(50),
+            AwayTeam nvarchar(50),
+            FTHG float,
+            FTAG float,
+            FTR nvarchar(1),
+            HTHG float,
+            HTAG float,
+            HTR nvarchar(1),
+            HS float,
+            AI float,
+            HST float,
+            AST float,
+            HF float,
+            AF float,
+            HC float ,
+            AC float,
+            HY float,
+            AY float,
+            HR float,
+            AR float,
+            B365H float,
+            B365D float,
+            B365A float,
+            BWH float,
+            BWD float,
+            BWA float,
+            GBH float,
+            GBD float,
+            GBA float,
+            PSH float,
+            PSD float,
+            PSA float,
+            IWH float,
+            IWD float,
+            IWA float,
+            VCH float,
+            VCD float,
+            VCA float,
+            MaxH float,
+            MaxD float,
+            MaxA float,
+            AvgH float,
+            AvgD float,
+            AvgA float,
+            B365GreaterThan2_5 float,
+            B36MinusThan2_5 float,
+            PGreaterThan2_5 float,
+            PMinusThan2_5 float,
+            MaxGreaterThan2_5 float,
+            MaxMinusThan2_5 float,
+            AvgGreaterThan2_5 float,
+            AvgMinusThan2_5 float,
+            AHh float,
+            B365AHH float,
+            B365AHA float,
+            PAHH float,
+            PAHA float,
+            MaxAHH float,
+            MaxAHA float,
+            AvgAHH float,
+            AvgAHA float,
+            B365CH float,
+            B365CD float,
+            B365CA float,
+            BWCH float,
+            BWCD float,
+            BWCA float,
+            IWCH float,
+            IWCD float,
+            IWCA float,
+            PSCH float,
+            PSCD float,
+            PSCA float,
+            WHCH float,
+            WHCD float,
+            WHCA float,
+            VCCH float,
+            VCCD float,
+            VCCA float,
+            MaxCH float,
+            MaxCD float,
+            MaxCA float,
+            AvgCH float,
+            AvgCD float,
+            AvgCA float,
+            B365CGreaterThan2_5 float,
+            B365CMinusThan2_5 float,
+            PCGreaterThan2_5 float,
+            PCinusThan2_5 float,
+            MaxCGreaterThan2_5 float,
+            MaxCMinusThan2_5 float,
+            AvgCGreaterThan2_5 float,
+            AvgCinusThan2_5 float,
+            AHCh float,
+            B365CAHH float,
+            B365CAHA float,
+            PCAHH float,
+            PCAHA float,
+            MaxCAHH float,
+            MaxCAHA float,
+            AvgCAHH float,
+            AvgCAHA float,
+            Stagione nvarchar(50),
+            LBH float,
+            LBD float,
+            LBA float,
+            SOH float,
+            SBH float,
+            Referee nvarchar(50),
+            WHH float,
+            WHD float,
+            WHA float,
+            SJH float,
+            SJD float,
+            SJA float,
+            Bb1X2 float,
+            BbMxH float,
+            BbAvH float
+            )'''
+
+
+def creating_table(table_name):
+    try:
+        
+        print("creating TABLE ...")
+        if cursor.tables(table=table_name, tableType='TABLE').fetchone():
+            return f" the table {table_name} already exists"
+        else:
+            cursor.execute(Schema.format(table_name))
+
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return "Successfully Created"
+        
+    except Exception as error:
+        print("creating table failed")
+        print("Error:",error)
+
+
+print(creating_table(TableName))
